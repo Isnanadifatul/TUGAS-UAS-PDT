@@ -1,0 +1,70 @@
+version: '3.8'
+services:
+  mysql-master:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - master-data:/var/lib/mysql
+      - ./mysql-master/config:/etc/mysql/conf.d
+      - ./mysql-master/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my-network
+
+  mysql-slave1:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ./mysql-slave1/config:/etc/mysql/conf.d
+      - ./init-slave.sql:/docker-entrypoint-initdb.d/init-slave.sql
+    networks:
+      - my-network
+    depends_on:
+      - mysql-master
+
+  mysql-slave2:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ./mysql-slave2/config:/etc/mysql/conf.d
+      - ./init-slave.sql:/docker-entrypoint-initdb.d/init-slave.sql
+    networks:
+      - my-network
+    depends_on:
+      - mysql-master
+
+  redis:
+    image: redis:latest
+    networks:
+      - my-network
+
+  mongodb:
+    image: mongo:latest
+    networks:
+      - my-network
+
+  app:
+    build: .
+    networks:
+      - my-network
+    depends_on:
+      - mysql-master
+      - redis
+      - mongodb
+
+volumes:
+  master-data:
+
+networks:
+  my-network:

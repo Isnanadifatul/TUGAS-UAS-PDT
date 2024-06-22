@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://example.com;">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/insertProduk" method="POST">
+        <label for="jenis_produk">Jenis Produk</label>
+        <input type="jenis_produk" name="jenis_produk" required>
+        <label for="nama_produk">Nama Produk</label>
+        <input type="nama_produk" name="nama_produk" required>
+        <label for="harga">Harga</label>
+        <input type="harga" name="harga" required>
+        <label for="deskripsi">Deskripsi</label>
+        <input type="deskripsi" name="deskripsi" required>
+        <input type="submit" name="register">
+    </form>
+</body>
+</html>
